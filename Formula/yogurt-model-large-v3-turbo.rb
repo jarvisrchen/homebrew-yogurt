@@ -1,0 +1,47 @@
+class YogurtModelLargeV3Turbo < Formula
+  desc "whisper.cpp large-v3-turbo model for yogurt local transcription"
+  homepage "https://github.com/jarvisrchen/yogurt"
+  url "https://github.com/jarvisrchen/yogurt/releases/download/models-v1/ggml-large-v3-turbo.bin"
+  version "1"
+  sha256 "1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69"
+  license "MIT"
+
+  # Mirrored from https://huggingface.co/ggerganov/whisper.cpp so this
+  # installs on a network that cannot reach HuggingFace. github.com is
+  # already proven reachable here - it served the yogurt binary.
+
+  # Tap-qualified: an unqualified "yogurt" would resolve against
+  # homebrew-core first if a formula by that name ever lands there.
+  depends_on "jarvisrchen/yogurt/yogurt"
+
+  def install
+    sha = "1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69"
+    models = share/"yogurt/models"
+    models.install "ggml-large-v3-turbo.bin"
+    model = models/"ggml-large-v3-turbo.bin"
+
+    # yogurt reads a "<sha256> <bytes>" sidecar to answer "is this model
+    # present?" without re-hashing the file. Write it here: without it
+    # yogurt falls back to hashing, and it cannot cache the result because
+    # this prefix is not writable at runtime - so every Settings page load
+    # would re-hash the whole model.
+    (models/"ggml-large-v3-turbo.bin.sha256").write "#{sha} #{model.size}\n"
+  end
+
+  def caveats
+    <<~EOS
+      yogurt picks this up automatically - it reads models from
+      #{HOMEBREW_PREFIX}/share/yogurt/models as well as ~/.yogurt/models.
+      Select "large-v3-turbo" under Settings -> Transcription -> Local.
+    EOS
+  end
+
+  test do
+    sha = "1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69"
+    model = share/"yogurt/models/ggml-large-v3-turbo.bin"
+    assert_predicate model, :exist?
+    assert_equal sha, Digest::SHA256.file(model).hexdigest
+    # The sidecar must agree with the file, or yogurt re-hashes every check.
+    assert_equal "#{sha} #{model.size}", (share/"yogurt/models/ggml-large-v3-turbo.bin.sha256").read.strip
+  end
+end
