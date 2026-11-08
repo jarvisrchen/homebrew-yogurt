@@ -1,21 +1,26 @@
 class Yogurt < Formula
   desc "Local-first meeting copilot -- Granola's UX, your machine."
   homepage "https://github.com/jarvisrchen/yogurt"
-  version "2.6.0"
+  version "2.7.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/jarvisrchen/yogurt/releases/download/v2.6.0/yogurt-aarch64-apple-darwin.tar.gz"
-      sha256 "f89862a4006d6cb5e30c582261d77bc795ef355580a1f9a99d98de02f2cb9f74"
+      url "https://github.com/jarvisrchen/yogurt/releases/download/v2.7.0/yogurt-aarch64-apple-darwin.tar.gz"
+      sha256 "7ae917d21b359c69ca48259495bb902d9351b90a2b923532653336224f626f2a"
     else
-      url "https://github.com/jarvisrchen/yogurt/releases/download/v2.6.0/yogurt-x86_64-apple-darwin.tar.gz"
-      sha256 "6be6cafc7872debd6139543c9c415d313807cb7ba9dc7936d5050e8d6c117d4f"
+      url "https://github.com/jarvisrchen/yogurt/releases/download/v2.7.0/yogurt-x86_64-apple-darwin.tar.gz"
+      sha256 "af4b3d8f2ddd2da2e8712e58617f43c6aaeeb3bef9169e45ff3b56ebafbbb0aa"
     end
   end
 
   def install
     bin.install "yogurt"
+    # llama.cpp's, sherpa-onnx's, and onnxruntime's dylibs, which the binary finds at @executable_path/../libexec.
+    # Not lib/: Homebrew's ggml formula owns lib/libggml*, and brew link would collide.
+    libexec.install Dir["libexec/*"]
+    # The native libraries' and Parakeet's license texts.
+    doc.install Dir["licenses/*"]
   end
 
   test do
