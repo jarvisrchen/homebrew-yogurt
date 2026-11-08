@@ -1,5 +1,5 @@
 class YogurtModelLargeV3Turbo < Formula
-  desc "whisper.cpp large-v3-turbo model for yogurt local transcription"
+  desc "Whisper large-v3-turbo model for yogurt local transcription"
   homepage "https://github.com/jarvisrchen/yogurt"
   url "https://github.com/jarvisrchen/yogurt/releases/download/models-v1/ggml-large-v3-turbo.bin"
   version "1"
@@ -14,18 +14,23 @@ class YogurtModelLargeV3Turbo < Formula
   # homebrew-core first if a formula by that name ever lands there.
   depends_on "jarvisrchen/yogurt/yogurt"
 
+  # Every file and its SHA256, rendered from crates/yogurt-stt/src/models.rs.
+  MODEL_FILES = {
+    "ggml-large-v3-turbo.bin" =>
+      "1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69",
+  }.freeze
+
   def install
-    sha = "1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69"
     models = share/"yogurt/models"
-    models.install "ggml-large-v3-turbo.bin"
-    model = models/"ggml-large-v3-turbo.bin"
+    models.install MODEL_FILES.keys.first
+    MODEL_FILES.keys.drop(1).each { |f| resource(f).stage { models.install f } }
 
     # yogurt reads a "<sha256> <bytes>" sidecar to answer "is this model
     # present?" without re-hashing the file. Write it here: without it
     # yogurt falls back to hashing, and it cannot cache the result because
     # this prefix is not writable at runtime - so every Settings page load
     # would re-hash the whole model.
-    (models/"ggml-large-v3-turbo.bin.sha256").write "#{sha} #{model.size}\n"
+    MODEL_FILES.each { |f, sha| (models/"#{f}.sha256").write "#{sha} #{(models/f).size}\n" }
   end
 
   def caveats
@@ -37,11 +42,12 @@ class YogurtModelLargeV3Turbo < Formula
   end
 
   test do
-    sha = "1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69"
-    model = share/"yogurt/models/ggml-large-v3-turbo.bin"
-    assert_predicate model, :exist?
-    assert_equal sha, Digest::SHA256.file(model).hexdigest
-    # The sidecar must agree with the file, or yogurt re-hashes every check.
-    assert_equal "#{sha} #{model.size}", (share/"yogurt/models/ggml-large-v3-turbo.bin.sha256").read.strip
+    MODEL_FILES.each do |f, sha|
+      model = share/"yogurt/models"/f
+      assert_path_exists model
+      assert_equal sha, Digest::SHA256.file(model).hexdigest
+      # The sidecar must agree with the file, or yogurt re-hashes every check.
+      assert_equal "#{sha} #{model.size}", (share/"yogurt/models/#{f}.sha256").read.strip
+    end
   end
 end
