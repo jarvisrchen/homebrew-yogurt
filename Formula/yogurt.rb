@@ -1,16 +1,16 @@
 class Yogurt < Formula
   desc "Local-first meeting copilot -- Granola's UX, your machine."
   homepage "https://github.com/jarvisrchen/yogurt"
-  version "3.3.0"
+  version "3.4.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/jarvisrchen/yogurt/releases/download/v3.3.0/yogurt-aarch64-apple-darwin.tar.gz"
-      sha256 "abc3c33cbb619b1058e9a6b53f8901b462b7595d20e1de5d5a847995849e8ec8"
+      url "https://github.com/jarvisrchen/yogurt/releases/download/v3.4.0/yogurt-aarch64-apple-darwin.tar.gz"
+      sha256 "9a16b4492670e9a82ca5fad54cccd48920d4f9c997cee2b24896fc273e7cdeb4"
     else
-      url "https://github.com/jarvisrchen/yogurt/releases/download/v3.3.0/yogurt-x86_64-apple-darwin.tar.gz"
-      sha256 "a0f485715057d46f931f23c27975fb3f900e00d4e82661862c36fb3171607127"
+      url "https://github.com/jarvisrchen/yogurt/releases/download/v3.4.0/yogurt-x86_64-apple-darwin.tar.gz"
+      sha256 "f8afb3d7428653ee7ed3385ec9658a14e93ddfd7e56e04e2e6bbb43efaa30f7a"
     end
   end
 
