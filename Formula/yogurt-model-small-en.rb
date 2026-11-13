@@ -1,7 +1,7 @@
 class YogurtModelSmallEn < Formula
   desc "Whisper small.en model for yogurt local transcription"
-  homepage "https://github.com/jarvisrchen/yogurt"
-  url "https://github.com/jarvisrchen/yogurt/releases/download/models-v1/ggml-small.en.bin"
+  homepage "https://github.com/jarvisrchen/yogurt-releases"
+  url "https://github.com/jarvisrchen/yogurt-releases/releases/download/models-v1/ggml-small.en.bin"
   version "1"
   sha256 "c6138d6d58ecc8322097e0f987c32f1be8bb0a18532a3f88f734d1bbf9c41e5d"
   license "MIT"
