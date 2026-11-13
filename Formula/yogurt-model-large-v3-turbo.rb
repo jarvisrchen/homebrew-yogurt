@@ -1,7 +1,7 @@
 class YogurtModelLargeV3Turbo < Formula
   desc "Whisper large-v3-turbo model for yogurt local transcription"
-  homepage "https://github.com/jarvisrchen/yogurt"
-  url "https://github.com/jarvisrchen/yogurt/releases/download/models-v1/ggml-large-v3-turbo.bin"
+  homepage "https://github.com/jarvisrchen/yogurt-releases"
+  url "https://github.com/jarvisrchen/yogurt-releases/releases/download/models-v1/ggml-large-v3-turbo.bin"
   version "1"
   sha256 "1fc70f774d38eb169993ac391eea357ef47c88757ef72ee5943879b7e8e2bc69"
   license "MIT"

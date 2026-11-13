@@ -1,7 +1,7 @@
 class YogurtModelMediumEn < Formula
   desc "Whisper medium.en model for yogurt local transcription"
-  homepage "https://github.com/jarvisrchen/yogurt"
-  url "https://github.com/jarvisrchen/yogurt/releases/download/models-v1/ggml-medium.en.bin"
+  homepage "https://github.com/jarvisrchen/yogurt-releases"
+  url "https://github.com/jarvisrchen/yogurt-releases/releases/download/models-v1/ggml-medium.en.bin"
   version "1"
   sha256 "cc37e93478338ec7700281a7ac30a10128929eb8f427dda2e865faa8f6da4356"
   license "MIT"
