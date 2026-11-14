@@ -24,6 +24,6 @@ class Yogurt < Formula
   end
 
   test do
-    assert_equal "yogurt #{version}", shell_output("#{bin}/yogurt --version").strip
+    assert_match(/\Ayogurt #{Regexp.escape(version.to_s)}( \(\d{4}-\d{2}-\d{2}\))?\z/, shell_output("#{bin}/yogurt --version").strip)
   end
 end
